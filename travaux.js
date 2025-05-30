@@ -24,8 +24,9 @@ conteneurCategories.classList.add("categories");
 document.querySelector(".gallery").insertAdjacentElement("beforebegin", conteneurCategories);
 
 const btnTous = document.createElement("button");
-btnTous.classList.add("tous");
+btnTous.classList.add("filtres");
 btnTous.innerText = "Tous";
+btnTous.dataset.id = "0";
 document.querySelector(".categories").appendChild(btnTous);
 
 const reponseCategories = await fetch("http://localhost:5678/api/categories");
@@ -36,21 +37,22 @@ for (let i = 0; i < categories.length; i++) {
     const btnCategorie = document.createElement("button");
     btnCategorie.classList.add("filtres");
     btnCategorie.innerText = categories[i].name;
+    btnCategorie.dataset.id = categories[i].id;
     document.querySelector(".categories").appendChild(btnCategorie);
 }
-
-btnTous.addEventListener("click", function(event) {
-    document.querySelector(".gallery").innerHTML = "";
-    genererGallerie(travaux);
-})
 
 const filtresCategorie = document.querySelectorAll(".categories .filtres");
 for (let i = 0; i < filtresCategorie.length; i++) {
     filtresCategorie[i].addEventListener("click", function(event) {
-        const travauxFiltres = travaux.filter(function(travaux) {
-            return travaux.categoryId === categories[i].id;
-        })
-    document.querySelector(".gallery").innerHTML = "";
-    genererGallerie(travauxFiltres);
+        if (event.target.dataset.id === "0") {
+            document.querySelector(".gallery").innerHTML = "";
+            genererGallerie(travaux);
+        } else {
+            const travauxFiltres = travaux.filter(function(travaux) {
+                return travaux.categoryId === parseInt(event.target.dataset.id);
+            });
+            document.querySelector(".gallery").innerHTML = "";
+            genererGallerie(travauxFiltres);
+        }
     })
 }
