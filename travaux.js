@@ -56,3 +56,35 @@ for (let i = 0; i < filtresCategorie.length; i++) {
         }
     })
 }
+
+const utilisateurStorage = window.sessionStorage.getItem("1");
+if (utilisateurStorage !== null) {
+    afficherModeEdition();
+};
+
+function afficherModeEdition() {
+    //barre mode édition
+    const barreMode = document.createElement("div");
+    barreMode.classList.add("barre-mode");
+    const elementSpan = document.createElement("span");
+    elementSpan.classList.add("material-symbols-outlined");
+    elementSpan.innerText = "edit_square";
+    const elementP = document.createElement("p");
+    elementP.innerText = "Mode édition";
+    document.querySelector("body").prepend(barreMode);
+    barreMode.appendChild(elementSpan);
+    barreMode.appendChild(elementP);
+    //bouton modifier
+    const btnModifier = document.createElement("div");
+    btnModifier.classList.add("btn-modifier");
+    const elementSpan2 = document.createElement("span");
+    elementSpan2.classList.add("material-symbols-outlined");
+    elementSpan2.innerText = "edit_square";
+    const elementP2 = document.createElement("p");
+    elementP2.innerText = "Modifier";
+    document.querySelector("#portfolio h2").insertAdjacentElement("afterend", btnModifier);
+    btnModifier.appendChild(elementSpan2);
+    btnModifier.appendChild(elementP2);
+    //suppression des filtres publics
+    document.querySelector(".categories").remove();
+};
