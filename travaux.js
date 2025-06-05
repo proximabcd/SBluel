@@ -24,7 +24,6 @@ conteneurCategories.classList.add("categories");
 document.querySelector(".gallery").insertAdjacentElement("beforebegin", conteneurCategories);
 
 const btnTous = document.createElement("button");
-btnTous.classList.add("filtres");
 btnTous.innerText = "Tous";
 btnTous.dataset.id = "0";
 document.querySelector(".categories").appendChild(btnTous);
@@ -35,13 +34,12 @@ console.log(categories);
 
 for (let i = 0; i < categories.length; i++) {
     const btnCategorie = document.createElement("button");
-    btnCategorie.classList.add("filtres");
     btnCategorie.innerText = categories[i].name;
     btnCategorie.dataset.id = categories[i].id;
     document.querySelector(".categories").appendChild(btnCategorie);
 }
 
-const filtresCategorie = document.querySelectorAll(".categories .filtres");
+const filtresCategorie = document.querySelectorAll(".categories button");
 for (let i = 0; i < filtresCategorie.length; i++) {
     filtresCategorie[i].addEventListener("click", function(event) {
         if (event.target.dataset.id === "0") {
@@ -63,7 +61,6 @@ if (utilisateurStorage !== null) {
 };
 
 function afficherModeEdition() {
-    //barre mode édition
     const barreMode = document.createElement("div");
     barreMode.classList.add("barre-mode");
     const elementSpan = document.createElement("span");
@@ -74,7 +71,8 @@ function afficherModeEdition() {
     document.querySelector("body").prepend(barreMode);
     barreMode.appendChild(elementSpan);
     barreMode.appendChild(elementP);
-    //bouton modifier
+    document.querySelector("header").style.margin = "97px 0px 50px 0px";
+
     const btnModifier = document.createElement("div");
     btnModifier.classList.add("btn-modifier");
     const elementSpan2 = document.createElement("span");
@@ -85,6 +83,5 @@ function afficherModeEdition() {
     document.querySelector("#portfolio h2").insertAdjacentElement("afterend", btnModifier);
     btnModifier.appendChild(elementSpan2);
     btnModifier.appendChild(elementP2);
-    //suppression des filtres publics
-    document.querySelector(".categories").remove();
+    document.querySelector(".categories").innerHTML = "";
 };
