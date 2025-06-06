@@ -57,15 +57,15 @@ for (let i = 0; i < filtresCategorie.length; i++) {
 
 const utilisateurStorage = window.sessionStorage.getItem("1");
 if (utilisateurStorage !== null) {
-    afficherModeEdition();
+    afficherModeEdition(travaux);
 };
 
-function afficherModeEdition() {
+function afficherModeEdition(travaux) {
     const barreMode = document.createElement("div");
     barreMode.classList.add("barre-mode");
     const elementSpan = document.createElement("span");
     elementSpan.classList.add("material-symbols-outlined");
-    elementSpan.innerText = "edit_square";
+    elementSpan.innerText = "edit_square"
     const elementP = document.createElement("p");
     elementP.innerText = "Mode édition";
     document.querySelector("body").prepend(barreMode);
@@ -83,5 +83,8 @@ function afficherModeEdition() {
     document.querySelector("#portfolio h2").insertAdjacentElement("afterend", btnModifier);
     btnModifier.appendChild(elementSpan2);
     btnModifier.appendChild(elementP2);
+
     document.querySelector(".categories").innerHTML = "";
+    document.querySelector(".gallery").innerHTML = "";
+    genererGallerie(travaux);
 };
