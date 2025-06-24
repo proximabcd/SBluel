@@ -20,16 +20,16 @@ controleIdentifiants.addEventListener("submit", async function(event) {
             if (elementErreur !== null) {
                 elementErreur.remove();
             };
-            const objetToken = await reponseLogin.json(); 
-            console.log(objetToken);
-            window.sessionStorage.setItem("1", JSON.stringify(objetToken));
-            window.location.href = "./index.html";
+            const objetUser = await reponseLogin.json(); 
+            console.log(objetUser);
+            window.sessionStorage.setItem(objetUser.userId, objetUser.token);
+            window.open("./index.html", "_blank");
         } else {
             if (reponseLogin.status === 401) {
-                throw new Error("Not authorized");
+                throw new Error("Mot de passe erroné");
             };
             if (reponseLogin.status === 404) {
-                throw new Error("User not found");
+                throw new Error("Utilisateur inconnu");
             };
             console.log(reponseLogin.status);
         }
@@ -39,7 +39,7 @@ controleIdentifiants.addEventListener("submit", async function(event) {
             let elementErreur = document.createElement("p");
             elementErreur.id = "message-erreur";
             elementErreur.innerText = error.message;    
-            document.querySelector("form").insertAdjacentElement("beforebegin", elementErreur);
+            document.querySelector("form").appendChild(elementErreur);
         } else {
             elementErreur.innerText = error.message;
         }

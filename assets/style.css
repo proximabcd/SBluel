@@ -142,20 +142,6 @@ body {
     font-size: 14px;
 }
 
-.barre-mode {
-    height: 59px;
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 21px;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-}
-
 header {
     display: flex;
     justify-content: space-between;
@@ -179,7 +165,6 @@ h1>span {
     font-family: 'Work Sans';
     font-size: 10px;
     letter-spacing: 0.1em;
-    ;
 }
 
 h2 {
@@ -232,13 +217,13 @@ li:hover {
 }
 
 #portfolio {
-    position: relative;
-    margin-top: 139px;
+    margin-top: 140px;
 }
 
 #portfolio h2 {
     text-align: center;
     margin-bottom: 1em;
+    position: relative;
 }
 
 .categories {
@@ -246,16 +231,6 @@ li:hover {
     display: flex;
     justify-content: center;
     gap: 10px;
-}
-
-.btn-modifier {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    left: 700px;
-    top: 3px;
-    height: 30px;
 }
 
 .categories button {
@@ -267,6 +242,11 @@ li:hover {
     padding: 0px 10px;
     font-size: 16px;
     font-weight: 700;
+}
+
+.categories button:hover {
+    color: white;
+    background-color: #1D6154;
 }
 
 .gallery {
@@ -324,7 +304,8 @@ li:hover {
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+#btn-connexion,
+#btn-envoyer {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
@@ -339,14 +320,226 @@ input[type="submit"] {
     text-decoration: underline;
 }
 
+#message-erreur {
+    color: red;
+    margin-bottom: 2em;
+    text-align: center;
+    text-decoration: none !important;
+}
+
 footer nav ul {
     display: flex;
     justify-content: flex-end;
     margin: 2em
 }
 
-.footerlogin {
+.footer-login {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+/** mode édition **/
+
+.barre-mode {
+    height: 59px;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 21px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.btn-modifier {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+    background-color: white;
+    border: none;
+    padding-left: 10px;
+    position: absolute;
+    left: 59%;
+    top: 70.5%;
+}
+
+/** modales **/
+
+dialog {
+    position: relative;
+    width: 630px;
+    height: 688px;
+    top: 945px;
+    /** (660 + (688 / 2) - 59) **/
+    border: none;
+    border-radius: 10px;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.vue1,
+.vue2 {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 688px;
+}
+
+#btn-fermer {
+    min-width: 630px;
+    text-align: end;
+    cursor: default;
+}
+
+dialog h3 {
+    font-size: 26px;
+    font-weight: 400;
+    margin: auto;
+}
+
+.vue1 .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 9px;
+    grid-row-gap: 2em;
+    padding: 2em 0 4em 0;
+    border-bottom: 1px #b3b3b3 solid;
+}
+
+.vue1 figure {
+    position: relative;
+}
+
+.vue1 img {
+    width: 79px;
+    height: 103px;
+}
+
+.icone-delete {
+    background-color: black;
+    color: white;
+    font-size: 17px;
+    top: 3px;
+    right: 3px;
+    position: absolute;
+    cursor: default;
+}
+
+.btns-retour-fermer {
+    display: flex;
+    width: 630px;
+    justify-content: space-between;
+}
+
+#btn-retour {
+    cursor: default;
+}
+
+#btn-fermer-2 {
+    cursor: default;
+}
+
+#btn-ajouter {
+    width: 237px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #1D6154;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    margin: auto;
+
+}
+
+.zone-select-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 420px;
+    height: 169px;
+    background-color: #e8f1f6;
+    gap: 5px;
+}
+
+.icone-select-image {
+    font-size: 76px;
+    color: #b9c5cc;
+    cursor: default;
+}
+
+#btn-ajouter-image {
+    width: 173px;
+    height: 36px;
+    background-color: #CBD6DC;
+    color: #306685;
+    border: none;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.btn-valider {
+    width: 237px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #a7a7a7;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+}
+
+.vue2 form {
+    text-align: left;
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4em;
+}
+
+#titre,
+#categorie {
+    width: 420px;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 400;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    background-color: white;
+}
+
+.vue2 label {
+    margin: 2em 0 1em 0;
+}
+
+.zone-message {
+    height: 4em;
+    border-bottom: 1px #b3b3b3 solid;
+}
+
+.zone-message p {
+    padding-top: 2em;
+    color: red;
+}
+
+.zone-ajout .btn-ajout-image {
+    margin: 0;
+}
+
+.nouvelle-image {
+    width: 129px;
+    height: 100%;
+    object-fit: cover;
 }
