@@ -120,13 +120,13 @@
                     <span id="btn-fermer-2" class="material-symbols-outlined">close</span>
                 </div>
                 <h3>Ajout photo</h3>
+                <div class="zone-select-image">
+                    <span class="material-symbols-outlined icone-select-image">imagesmode</span>
+                    <input type="file" name="image" id="image" accept=".jpg, .png" style="display: none;">
+                    <button type="button" id="btn-ajouter-image">+ Ajouter photo</button>
+                    <p>jpg, png : 4mo max</p>
+                </div>
                 <form name="infos-travail" id="infos-travail">
-                    <div class="zone-select-image">
-                        <span class="material-symbols-outlined icone-select-image">imagesmode</span>
-                        <input type="file" name="image" id="image" accept=".jpg, .png" style="display: none;">
-                        <button type="button" id="btn-ajouter-image">+ Ajouter photo</button>
-                        <p>jpg, png : 4mo max</p>
-                    </div>
                     <label for="title">Titre</label>
                     <input type="text" name="title" id="titre">
                     <label for="category">Catégorie</label>

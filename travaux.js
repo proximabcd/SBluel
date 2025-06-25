@@ -1,5 +1,5 @@
 const reponse = await fetch("http://localhost:5678/api/works");
-const travaux = await reponse.json();
+let travaux = await reponse.json();
 console.log(travaux);
 
 document.querySelector(".gallery").innerHTML = "";
@@ -18,7 +18,9 @@ if (token !== null) {
 
 //Génération et gestion de la modale
 
-genererGallerieModale(travaux);
+for (let i = 0; i < travaux.length; i++) {
+    genererFigure(travaux[i]);
+}
 
 const modale = document.querySelector("dialog");
 const conteneurVue1 = document.querySelector(".vue1");
@@ -71,9 +73,9 @@ for (let i = 0; i < categories.length; i++) {
 
 //Suppression d'un travail
 
-const imagesVue1 = document.querySelectorAll(".grid figure");
+const eltsFigVue1 = document.querySelectorAll(".grid figure");
 console.log(token);
-imagesVue1.forEach(figure => {
+eltsFigVue1.forEach(figure => {
     console.log(figure);
     figure.addEventListener("click", async () => {
         const id = figure.dataset.id;
@@ -89,16 +91,6 @@ imagesVue1.forEach(figure => {
             if (reponseSuppression.ok) {
                 console.log(reponseSuppression.status);
                 console.log(figure);
-                for (let i = travaux.length -1; i >= 0; i--) {
-                    if (travaux[i].id === parseInt(figure.dataset.id) ) {
-                        travaux.splice(i,1);
-                    }
-                }
-                console.log(travaux);
-                document.querySelector(".grid").innerHTML = "";
-                genererGallerieModale(travaux);
-                document.querySelector(".gallery").innerHTML = "";
-                genererGallerie(travaux);
              } else {
                 if (reponseSuppression.status === 401) {
                     throw new Error("Unauthorized");
@@ -111,16 +103,21 @@ imagesVue1.forEach(figure => {
         } catch (error) {
             console.log(error.message);
         }
+        document.querySelector(".grid").removeChild(figure);
+        const objetGallerie = document.querySelector(".gallery");
+        const eltFigSuppr = objetGallerie.querySelector(`[data-id="${id}"]`);
+        objetGallerie.removeChild(eltFigSuppr);
     });
 });
 
-//Ajout d'une image
+//Ajout et upload d'une image
 
 document.getElementById("btn-ajouter-image").addEventListener("click", () => {
-    document.getElementById("image").click();
+document.getElementById("image").click();
 });
 
 const inputFichier = document.getElementById("image");
+const conteneurImage = document.querySelector(".zone-select-image");
 inputFichier.addEventListener("change", (event) => {
     const elementImage = document.createElement("img");
     console.log(inputFichier.files[0]);
@@ -132,7 +129,7 @@ inputFichier.addEventListener("change", (event) => {
     document.querySelector(".btn-valider").style.backgroundColor = "#1D6154";
 });
 
-//Création et upload du nouveau travail
+//Envoi d'un nouveau travail à l'api
 
 const infosTravail = document.querySelector("#infos-travail");
 infosTravail.addEventListener("submit", async (event) => {
@@ -151,16 +148,9 @@ infosTravail.addEventListener("submit", async (event) => {
     console.log(reponseAjout);
     try {
         if (reponseAjout.ok) {
-            const objetTravail = await reponseAjout.json();
             console.log(reponseAjout.status)
-            console.log(objetTravail);
             const elementMessage = document.querySelector(".zone-message p");
             elementMessage.innerText = "Nouveau travail ajouté";
-            travaux.push(objetTravail);
-            document.querySelector(".grid").innerHTML = "";
-            genererGallerieModale(travaux);
-            document.querySelector(".gallery").innerHTML = "";
-            genererGallerie(travaux);
         } else {
             if (reponseAjout.status === 400) {
                 throw new Error("Saisie non conforme");
@@ -174,6 +164,14 @@ infosTravail.addEventListener("submit", async (event) => {
         const elementMessage = document.querySelector(".zone-message p");
         elementMessage.innerText = error.message;
     };
+    const reponseTravaux = await fetch("http://localhost:5678/api/works/");
+    travaux = await reponseTravaux.json();
+    console.log(travaux);
+    const nouveauTravail = travaux[travaux.length - 1];
+    console.log(nouveauTravail);
+    genererFigure(nouveauTravail);
+    document.querySelector(".gallery").innerHTML = "";
+    genererGallerie(travaux);
 });
 
 //Fonctions
@@ -254,21 +252,19 @@ function afficherModeEdition(travaux) {
     btnModifier.appendChild(elementPBtn);
 };
 
-function genererGallerieModale(travaux) {
-    for (let i = 0; i < travaux.length; i++) {
-        const elementFigure = document.createElement("figure");
-        elementFigure.dataset.id = travaux[i].id;
-        const elementImage = document.createElement("img");
-        elementImage.src = travaux[i].imageUrl;
-        elementImage.alt = travaux[i].title;
-        const iconeCorbeille = document.createElement("span");
-        iconeCorbeille.classList.add("material-symbols-outlined");
-        iconeCorbeille.classList.add("icone-delete");
-        iconeCorbeille.innerText = "delete";
-        document.querySelector(".grid").appendChild(elementFigure)
-        elementFigure.appendChild(elementImage);
-        elementFigure.appendChild(iconeCorbeille);
-    }
+function genererFigure(travail) {
+    const elementFigure = document.createElement("figure");
+    elementFigure.dataset.id = travail.id;
+    const elementImage = document.createElement("img");
+    elementImage.src = travail.imageUrl;
+    elementImage.alt = travail.title;
+    const iconeCorbeille = document.createElement("span");
+    iconeCorbeille.classList.add("material-symbols-outlined");
+    iconeCorbeille.classList.add("icone-delete");
+    iconeCorbeille.innerText = "delete";
+    document.querySelector(".grid").appendChild(elementFigure)
+    elementFigure.appendChild(elementImage);
+    elementFigure.appendChild(iconeCorbeille);
 }
 
 
