@@ -16,14 +16,7 @@ controleIdentifiants.addEventListener("submit", async function(event) {
     });
     try {
         if (reponseLogin.ok) {
-            let elementErreur = document.getElementById("message-erreur");
-            if (elementErreur !== null) {
-                elementErreur.remove();
-            };
-            const objetUser = await reponseLogin.json(); 
-            console.log(objetUser);
-            window.sessionStorage.setItem(objetUser.userId, objetUser.token);
-            window.open("./index.html", "_blank");
+            console.log(reponseLogin.status);
         } else {
             if (reponseLogin.status === 401) {
                 throw new Error("Mot de passe erroné");
@@ -44,4 +37,12 @@ controleIdentifiants.addEventListener("submit", async function(event) {
             elementErreur.innerText = error.message;
         }
     }
+    let elementErreur = document.getElementById("message-erreur");
+    if (elementErreur !== null) {
+        elementErreur.remove();
+    };
+    const objetUser = await reponseLogin.json(); 
+    window.sessionStorage.setItem(objetUser.userId, objetUser.token);
+    window.open("./index.html", "_blank");
+
 })

@@ -16,11 +16,14 @@ if (token !== null) {
     afficherModeEdition(travaux);
 };
 
+document.getElementById("lien-login").addEventListener("click", (event) => {
+    window.sessionStorage.removeItem("1");
+    location.reload();
+})
+
 //Génération et gestion de la modale
 
-for (let i = 0; i < travaux.length; i++) {
-    genererFigure(travaux[i]);
-}
+genererFiguresVue1(travaux);
 
 const modale = document.querySelector("dialog");
 const conteneurVue1 = document.querySelector(".vue1");
@@ -73,42 +76,51 @@ for (let i = 0; i < categories.length; i++) {
 
 //Suppression d'un travail
 
-const eltsFigVue1 = document.querySelectorAll(".grid figure");
-console.log(token);
-eltsFigVue1.forEach(figure => {
-    console.log(figure);
-    figure.addEventListener("click", async () => {
-        const id = figure.dataset.id;
-        console.log(id);
-        const reponseSuppression = await fetch(`http://localhost:5678/api/works/${id}`, {
-            method: "DELETE",
-            headers: {
-                "accept": "*/*",
-                "Authorization": `Bearer ${token}`
+const conteneurGridVue1 = document.querySelector(".vue1 .grid");
+conteneurGridVue1.addEventListener("click", async (event) => {
+    const iconesDelete = document.querySelectorAll(".grid figure .icone-delete");
+    for (const icone of iconesDelete) {
+        console.log(icone);
+        if (event.target === icone) {
+            const id = event.target.parentElement.dataset.id;
+            console.log(id);
+            const reponseSuppression = await fetch(`http://localhost:5678/api/works/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "accept": "*/*",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            try {
+                if (reponseSuppression.ok) {
+                    console.log(reponseSuppression.status);
+                } else {
+                    if (reponseSuppression.status === 401) {
+                        throw new Error("Unauthorized");
+                    }
+                    if (reponseSuppression.status === 500) {
+                        throw new Error("Unexpected Behaviour");
+                    }
+                    console.log(reponseSuppression.status);
+                }
+            } catch (error) {
+                console.log(error.message);
             }
-        });
-        try {
-            if (reponseSuppression.ok) {
-                console.log(reponseSuppression.status);
-                console.log(figure);
-             } else {
-                if (reponseSuppression.status === 401) {
-                    throw new Error("Unauthorized");
-                }
-                if (reponseSuppression.status === 500) {
-                    throw new Error("Unexpected Behaviour");
-                }
-                console.log(reponseSuppression.status);
-             }
-        } catch (error) {
-            console.log(error.message);
+            console.log(travaux);
+            const travauxRestants = travaux.filter((travail) => {
+                return travail.id !== parseInt(id);
+            })
+            console.log(travauxRestants);
+            document.querySelector(".vue1 .grid").innerHTML = "";
+            genererFiguresVue1(travauxRestants);
+            document.querySelector(".gallery").innerHTML = "";
+            genererGallerie(travauxRestants);
+            travaux = travauxRestants;
+            console.log(travaux);
+            break;
         }
-        document.querySelector(".grid").removeChild(figure);
-        const objetGallerie = document.querySelector(".gallery");
-        const eltFigSuppr = objetGallerie.querySelector(`[data-id="${id}"]`);
-        objetGallerie.removeChild(eltFigSuppr);
-    });
-});
+    }
+})
 
 //Ajout et upload d'une image
 
@@ -164,12 +176,12 @@ infosTravail.addEventListener("submit", async (event) => {
         const elementMessage = document.querySelector(".zone-message p");
         elementMessage.innerText = error.message;
     };
-    const reponseTravaux = await fetch("http://localhost:5678/api/works/");
-    travaux = await reponseTravaux.json();
-    console.log(travaux);
-    const nouveauTravail = travaux[travaux.length - 1];
+    const nouveauTravail = await reponseAjout.json();
     console.log(nouveauTravail);
-    genererFigure(nouveauTravail);
+    travaux.push(nouveauTravail);
+    console.log(travaux);
+    document.querySelector(".vue1 .grid").innerHTML = "";
+    genererFiguresVue1(travaux);
     document.querySelector(".gallery").innerHTML = "";
     genererGallerie(travaux);
 });
@@ -211,6 +223,12 @@ function genererFiltres(travaux, categories) {
     const filtresCategorie = document.querySelectorAll(".categories button");
     for (let i = 0; i < filtresCategorie.length; i++) {
         filtresCategorie[i].addEventListener("click", function(event) {
+            document.querySelectorAll(".categories button").forEach(btn => {
+                btn.style.backgroundColor = "white";
+                btn.style.color = "#1D6154";
+            })
+            event.target.style.backgroundColor = "#1D6154";
+            event.target.style.color = "white";
             if (event.target.dataset.id === "0") {
                 document.querySelector(".gallery").innerHTML = "";
                 genererGallerie(travaux);
@@ -227,44 +245,26 @@ function genererFiltres(travaux, categories) {
 
 function afficherModeEdition(travaux) {
     document.querySelector(".categories").innerHTML = "";
-
-    const conteneurBarreMode = document.createElement("div");
-    conteneurBarreMode.classList.add("barre-mode");
-    const elementIconeBarre = document.createElement("span");
-    elementIconeBarre.classList.add("material-symbols-outlined");
-    elementIconeBarre.innerText = "edit_square";
-    const elementPBarre = document.createElement("p");
-    elementPBarre.innerText = "Mode édition";
-    document.body.prepend(conteneurBarreMode);
-    conteneurBarreMode.appendChild(elementIconeBarre);
-    conteneurBarreMode.appendChild(elementPBarre);
     document.querySelector("header").style.marginTop = "97px";
-
-    const btnModifier = document.createElement("button");
-    btnModifier.classList.add("btn-modifier");
-    const elementIconeBtn = document.createElement("span");
-    elementIconeBtn.classList.add("material-symbols-outlined");
-    elementIconeBtn.innerText = "edit_square";
-    const elementPBtn = document.createElement("p");
-    elementPBtn.innerText = "modifier";
-    document.body.appendChild(btnModifier);
-    btnModifier.appendChild(elementIconeBtn);
-    btnModifier.appendChild(elementPBtn);
+    document.querySelector(".barre-mode-edition").style.display = "flex";
+    document.querySelector("#portfolio h2").style.display = "none";
+    document.querySelector(".edition-travaux").style.display = "flex";
+    document.querySelector("#lien-login").innerText = "logout";
 };
 
-function genererFigure(travail) {
-    const elementFigure = document.createElement("figure");
-    elementFigure.dataset.id = travail.id;
-    const elementImage = document.createElement("img");
-    elementImage.src = travail.imageUrl;
-    elementImage.alt = travail.title;
-    const iconeCorbeille = document.createElement("span");
-    iconeCorbeille.classList.add("material-symbols-outlined");
-    iconeCorbeille.classList.add("icone-delete");
-    iconeCorbeille.innerText = "delete";
-    document.querySelector(".grid").appendChild(elementFigure)
-    elementFigure.appendChild(elementImage);
-    elementFigure.appendChild(iconeCorbeille);
+function genererFiguresVue1(travaux) {
+    for (let i = 0; i < travaux.length; i++) { 
+        const elementFigure = document.createElement("figure");
+        elementFigure.dataset.id = travaux[i].id;
+        const elementImage = document.createElement("img");
+        elementImage.src = travaux[i].imageUrl;
+        elementImage.alt = travaux[i].title;
+        const iconeCorbeille = document.createElement("span");
+        iconeCorbeille.classList.add("material-symbols-outlined");
+        iconeCorbeille.classList.add("icone-delete");
+        iconeCorbeille.innerText = "delete";
+        document.querySelector(".grid").appendChild(elementFigure)
+        elementFigure.appendChild(elementImage);
+        elementFigure.appendChild(iconeCorbeille);
+    }
 }
-
-

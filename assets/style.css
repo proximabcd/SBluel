@@ -223,7 +223,18 @@ li:hover {
 #portfolio h2 {
     text-align: center;
     margin-bottom: 1em;
-    position: relative;
+}
+
+.edition-travaux {
+    display: none;
+    justify-content: center;
+    gap: 20px;
+    height: 30px;
+    margin-bottom: 30px;
+}
+
+.edition-travaux h2 {
+    padding-left: 125px;
 }
 
 .categories {
@@ -341,11 +352,11 @@ footer nav ul {
 
 /** mode édition **/
 
-.barre-mode {
+.barre-mode-edition {
     height: 59px;
     background-color: black;
     color: white;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     gap: 21px;
@@ -357,14 +368,10 @@ footer nav ul {
 
 .btn-modifier {
     display: flex;
-    align-items: end;
     gap: 10px;
     background-color: white;
     border: none;
-    padding-left: 10px;
-    position: absolute;
-    left: 59%;
-    top: 70.5%;
+    cursor: pointer;
 }
 
 /** modales **/
