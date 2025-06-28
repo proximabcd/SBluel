@@ -11,15 +11,23 @@ console.log(categories);
 
 genererFiltres(travaux, categories);
 
+//Affichage du mode édition après récupération du token
+
 const token = window.sessionStorage.getItem("1");
 if (token !== null) {
-    afficherModeEdition(travaux);
-};
+    document.querySelector(".categories").innerHTML = "";
+    document.querySelector("header").style.marginTop = "97px";
+    document.querySelector(".barre-mode-edition").style.display = "flex";
+    document.querySelector("#portfolio h2").style.display = "none";
+    document.querySelector(".edition-travaux").style.display = "flex";
 
-document.getElementById("lien-login").addEventListener("click", (event) => {
-    window.sessionStorage.removeItem("1");
-    location.reload();
-})
+    document.querySelector("#lien-login").innerText = "logout";
+    document.querySelector("#lien-login").href = "./index.html";
+    document.getElementById("lien-login").addEventListener("click", (event) => {
+        window.sessionStorage.removeItem("1");
+        window.location.reload();
+    });
+};
 
 //Génération et gestion de la modale
 
@@ -122,7 +130,7 @@ conteneurGridVue1.addEventListener("click", async (event) => {
     }
 })
 
-//Ajout et upload d'une image
+//Ajout et upload d'une image (utilisation de la délégation d'événement)
 
 document.getElementById("btn-ajouter-image").addEventListener("click", () => {
 document.getElementById("image").click();
@@ -242,15 +250,6 @@ function genererFiltres(travaux, categories) {
         })
     }
 }
-
-function afficherModeEdition(travaux) {
-    document.querySelector(".categories").innerHTML = "";
-    document.querySelector("header").style.marginTop = "97px";
-    document.querySelector(".barre-mode-edition").style.display = "flex";
-    document.querySelector("#portfolio h2").style.display = "none";
-    document.querySelector(".edition-travaux").style.display = "flex";
-    document.querySelector("#lien-login").innerText = "logout";
-};
 
 function genererFiguresVue1(travaux) {
     for (let i = 0; i < travaux.length; i++) { 
