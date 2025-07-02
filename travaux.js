@@ -90,7 +90,8 @@ conteneurGridVue1.addEventListener("click", async (event) => {
     for (const icone of iconesDelete) {
         console.log(icone);
         if (event.target === icone) {
-            const id = event.target.parentElement.dataset.id;
+            const figure = event.target.parentElement;
+            const id = figure.dataset.id;
             console.log(id);
             const reponseSuppression = await fetch(`http://localhost:5678/api/works/${id}`, {
                 method: "DELETE",
@@ -119,8 +120,7 @@ conteneurGridVue1.addEventListener("click", async (event) => {
                 return travail.id !== parseInt(id);
             })
             console.log(travauxRestants);
-            document.querySelector(".vue1 .grid").innerHTML = "";
-            genererFiguresVue1(travauxRestants);
+            conteneurGridVue1.removeChild(figure);
             document.querySelector(".gallery").innerHTML = "";
             genererGallerie(travauxRestants);
             travaux = travauxRestants;
@@ -130,7 +130,7 @@ conteneurGridVue1.addEventListener("click", async (event) => {
     }
 })
 
-//Ajout et upload d'une image (utilisation de la délégation d'événement)
+//Ajout et upload d'une image
 
 document.getElementById("btn-ajouter-image").addEventListener("click", () => {
 document.getElementById("image").click();
@@ -184,12 +184,12 @@ infosTravail.addEventListener("submit", async (event) => {
         const elementMessage = document.querySelector(".zone-message p");
         elementMessage.innerText = error.message;
     };
-    const nouveauTravail = await reponseAjout.json();
-    console.log(nouveauTravail);
-    travaux.push(nouveauTravail);
+    const nouvelObjet = await reponseAjout.json();
+    console.log(nouvelObjet);
+    travaux.push(nouvelObjet);
     console.log(travaux);
-    document.querySelector(".vue1 .grid").innerHTML = "";
-    genererFiguresVue1(travaux);
+    const nouveauTravail = Array.of(nouvelObjet);
+    genererFiguresVue1(nouveauTravail);
     document.querySelector(".gallery").innerHTML = "";
     genererGallerie(travaux);
 });
@@ -258,12 +258,12 @@ function genererFiguresVue1(travaux) {
         const elementImage = document.createElement("img");
         elementImage.src = travaux[i].imageUrl;
         elementImage.alt = travaux[i].title;
-        const iconeCorbeille = document.createElement("span");
-        iconeCorbeille.classList.add("material-symbols-outlined");
-        iconeCorbeille.classList.add("icone-delete");
-        iconeCorbeille.innerText = "delete";
+        const iconeDelete = document.createElement("span");
+        iconeDelete.classList.add("material-symbols-outlined");
+        iconeDelete.classList.add("icone-delete");
+        iconeDelete.innerText = "delete";
         document.querySelector(".grid").appendChild(elementFigure)
         elementFigure.appendChild(elementImage);
-        elementFigure.appendChild(iconeCorbeille);
+        elementFigure.appendChild(iconeDelete);
     }
 }

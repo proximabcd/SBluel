@@ -401,7 +401,7 @@ dialog::backdrop {
 #btn-fermer {
     min-width: 630px;
     text-align: end;
-    cursor: default;
+    cursor: pointer;
 }
 
 dialog h3 {
@@ -436,7 +436,7 @@ dialog h3 {
     top: 3px;
     right: 3px;
     position: absolute;
-    cursor: default;
+    cursor: pointer;
 }
 
 .btns-retour-fermer {
@@ -446,11 +446,11 @@ dialog h3 {
 }
 
 #btn-retour {
-    cursor: default;
+    cursor: pointer;
 }
 
 #btn-fermer-2 {
-    cursor: default;
+    cursor: pointer;
 }
 
 #btn-ajouter {
@@ -480,7 +480,7 @@ dialog h3 {
 .icone-select-image {
     font-size: 76px;
     color: #b9c5cc;
-    cursor: default;
+    cursor: pointer;
 }
 
 #btn-ajouter-image {
