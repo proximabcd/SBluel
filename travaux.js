@@ -115,16 +115,13 @@ conteneurGridVue1.addEventListener("click", async (event) => {
             } catch (error) {
                 console.log(error.message);
             }
-            console.log(travaux);
             const travauxRestants = travaux.filter((travail) => {
                 return travail.id !== parseInt(id);
             })
-            console.log(travauxRestants);
             conteneurGridVue1.removeChild(figure);
             document.querySelector(".gallery").innerHTML = "";
             genererGallerie(travauxRestants);
             travaux = travauxRestants;
-            console.log(travaux);
             break;
         }
     }
@@ -185,9 +182,7 @@ infosTravail.addEventListener("submit", async (event) => {
         elementMessage.innerText = error.message;
     };
     const nouvelObjet = await reponseAjout.json();
-    console.log(nouvelObjet);
     travaux.push(nouvelObjet);
-    console.log(travaux);
     const nouveauTravail = Array.of(nouvelObjet);
     genererFiguresVue1(nouveauTravail);
     document.querySelector(".gallery").innerHTML = "";
