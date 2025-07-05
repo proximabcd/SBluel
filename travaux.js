@@ -85,47 +85,43 @@ for (let i = 0; i < categories.length; i++) {
 //Suppression d'un travail
 
 const conteneurGridVue1 = document.querySelector(".vue1 .grid");
-conteneurGridVue1.addEventListener("click", async (event) => {
-    const iconesDelete = document.querySelectorAll(".grid figure .icone-delete");
-    for (const icone of iconesDelete) {
-        console.log(icone);
-        if (event.target === icone) {
-            const figure = event.target.parentElement;
-            const id = figure.dataset.id;
-            console.log(id);
-            const reponseSuppression = await fetch(`http://localhost:5678/api/works/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "accept": "*/*",
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-            try {
-                if (reponseSuppression.ok) {
-                    console.log(reponseSuppression.status);
-                } else {
-                    if (reponseSuppression.status === 401) {
-                        throw new Error("Unauthorized");
-                    }
-                    if (reponseSuppression.status === 500) {
-                        throw new Error("Unexpected Behaviour");
-                    }
-                    console.log(reponseSuppression.status);
-                }
-            } catch (error) {
-                console.log(error.message);
+const iconesDelete = document.querySelectorAll(".grid figure .icone-delete");
+for (const icone of iconesDelete) {
+    icone.addEventListener("click", async (event) => {
+        const figure = event.target.parentElement;
+        const id = figure.dataset.id;
+        console.log(id);
+        const reponseSuppression = await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+                "accept": "*/*",
+                "Authorization": `Bearer ${token}`
             }
-            const travauxRestants = travaux.filter((travail) => {
-                return travail.id !== parseInt(id);
-            })
-            conteneurGridVue1.removeChild(figure);
-            document.querySelector(".gallery").innerHTML = "";
-            genererGallerie(travauxRestants);
-            travaux = travauxRestants;
-            break;
+        });
+        try {
+            if (reponseSuppression.ok) {
+                console.log(reponseSuppression.status);
+            } else {
+                if (reponseSuppression.status === 401) {
+                    throw new Error("Unauthorized");
+                }
+                if (reponseSuppression.status === 500) {
+                    throw new Error("Unexpected Behaviour");
+                }
+                console.log(reponseSuppression.status);
+            }
+        } catch (error) {
+            console.log(error.message);
         }
-    }
-})
+        const travauxRestants = travaux.filter((travail) => {
+            return travail.id !== parseInt(id);
+        })
+        conteneurGridVue1.removeChild(figure);
+        document.querySelector(".gallery").innerHTML = "";
+        genererGallerie(travauxRestants);
+        travaux = travauxRestants;
+    });
+};
 
 //Ajout et upload d'une image
 
