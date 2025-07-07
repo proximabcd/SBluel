@@ -20,9 +20,9 @@ controleIdentifiants.addEventListener("submit", async function(event) {
             console.log(reponseLogin.status);
             let elementErreur = document.getElementById("message-erreur");
             if (elementErreur !== null) {
-            elementErreur.remove();
+                elementErreur.remove();
             };
-            const objetUser = await reponseLogin.json(); 
+            const objetUser = await reponseLogin.json();
             window.sessionStorage.setItem(objetUser.userId, objetUser.token);
             window.open("./index.html", "_blank");
         } else {
@@ -32,14 +32,14 @@ controleIdentifiants.addEventListener("submit", async function(event) {
             if (reponseLogin.status === 404) {
                 throw new Error("Utilisateur inconnu");
             };
-            console.log(reponseLogin.status);
+            throw new Error(reponseLogin.status);
         }
     } catch (error) {
         let elementErreur = document.getElementById("message-erreur");
         if (elementErreur === null) {
             let elementErreur = document.createElement("p");
             elementErreur.id = "message-erreur";
-            elementErreur.innerText = error.message;    
+            elementErreur.innerText = error.message;
             document.querySelector("form").appendChild(elementErreur);
         } else {
             elementErreur.innerText = error.message;

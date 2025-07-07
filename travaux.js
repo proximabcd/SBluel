@@ -108,7 +108,7 @@ for (const icone of iconesDelete) {
                 if (reponseSuppression.status === 500) {
                     throw new Error("Unexpected Behaviour");
                 }
-                console.log(reponseSuppression.status);
+                throw new Error(reponseSuppression.status);
             }
         } catch (error) {
             console.log(error.message);
@@ -126,7 +126,7 @@ for (const icone of iconesDelete) {
 //Ajout et upload d'une image
 
 document.getElementById("btn-ajouter-image").addEventListener("click", () => {
-document.getElementById("image").click();
+    document.getElementById("image").click();
 });
 
 const inputFichier = document.getElementById("image");
@@ -164,25 +164,25 @@ infosTravail.addEventListener("submit", async (event) => {
             console.log(reponseAjout.status)
             const elementMessage = document.querySelector(".zone-message p");
             elementMessage.innerText = "Nouveau travail ajouté";
+            const nouvelObjet = await reponseAjout.json();
+            travaux.push(nouvelObjet);
+            const nouveauTravail = Array.of(nouvelObjet);
+            genererFiguresVue1(nouveauTravail);
+            document.querySelector(".gallery").innerHTML = "";
+            genererGallerie(travaux);
         } else {
             if (reponseAjout.status === 400) {
                 throw new Error("Saisie non conforme");
             };
             if (reponseAjout.status === 401) {
-                throw new Error("Accès non autorisé"); 
+                throw new Error("Accès non autorisé");
             }
         };
-        console.log(reponseAjout.status);
+        throw new Error(reponseAjout.status);
     } catch (error) {
         const elementMessage = document.querySelector(".zone-message p");
         elementMessage.innerText = error.message;
     };
-    const nouvelObjet = await reponseAjout.json();
-    travaux.push(nouvelObjet);
-    const nouveauTravail = Array.of(nouvelObjet);
-    genererFiguresVue1(nouveauTravail);
-    document.querySelector(".gallery").innerHTML = "";
-    genererGallerie(travaux);
 });
 
 //Fonctions
@@ -205,7 +205,7 @@ function genererGallerie(travaux) {
 function genererFiltres(travaux, categories) {
     const conteneurCategories = document.createElement("div");
     conteneurCategories.classList.add("categories");
-    document.querySelector(".gallery").insertAdjacentElement("beforebegin", conteneurCategories);   
+    document.querySelector(".gallery").insertAdjacentElement("beforebegin", conteneurCategories);
 
     const btnTous = document.createElement("button");
     btnTous.innerText = "Tous";
@@ -243,7 +243,7 @@ function genererFiltres(travaux, categories) {
 }
 
 function genererFiguresVue1(travaux) {
-    for (let i = 0; i < travaux.length; i++) { 
+    for (let i = 0; i < travaux.length; i++) {
         const elementFigure = document.createElement("figure");
         elementFigure.dataset.id = travaux[i].id;
         const elementImage = document.createElement("img");
