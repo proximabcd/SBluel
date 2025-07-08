@@ -177,8 +177,8 @@ infosTravail.addEventListener("submit", async (event) => {
             if (reponseAjout.status === 401) {
                 throw new Error("Accès non autorisé");
             }
+            throw new Error(reponseAjout.status);
         };
-        throw new Error(reponseAjout.status);
     } catch (error) {
         const elementMessage = document.querySelector(".zone-message p");
         elementMessage.innerText = error.message;
